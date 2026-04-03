@@ -38,18 +38,22 @@ app.on('window-all-closed', () => {
 
 // IPC Handler for saving standard images
 ipcMain.handle('save-file', async (event, { buffer, defaultPath }) => {
-  const { canceled, filePath } = await dialog.showSaveDialog({
-    defaultPath,
-    filters: [
-      { name: 'Images', extensions: [defaultPath.split('.').pop()] }
-    ]
-  });
+  try {
+    const { canceled, filePath } = await dialog.showSaveDialog({
+      defaultPath,
+      filters: [
+        { name: 'Images', extensions: [defaultPath.split('.').pop()] }
+      ]
+    });
 
-  if (!canceled && filePath) {
-    fs.writeFileSync(filePath, Buffer.from(buffer));
-    return { success: true, filePath };
+    if (!canceled && filePath) {
+      fs.writeFileSync(filePath, Buffer.from(buffer));
+      return { success: true, filePath };
+    }
+    return { success: false, canceled: true };
+  } catch (err) {
+    return { success: false, error: err.message };
   }
-  return { success: false };
 });
 
 // IPC Handler for converting PNG buffer to ICO
@@ -72,7 +76,7 @@ ipcMain.handle('save-ico', async (event, { buffer, defaultPath }) => {
             
             return { success: true, filePath: finalPath };
         }
-        return { success: false };
+        return { success: false, canceled: true };
     } catch (err) {
         return { success: false, error: err.message };
     }

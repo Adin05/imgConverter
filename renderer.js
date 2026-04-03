@@ -183,6 +183,10 @@ async function handleImageRendering(mode) {
             case 'ico':
                 mimeType = 'image/png'; // draw to png temp buffer first for ico script
                 exportExt = 'ico';
+                
+                // FIXED: Syarat Konversi ke ICO (Rasio harus 1:1, package default biasanya mengharuskan 256x256 minimum untuk rendering optimal)
+                targetWidth = 256;
+                targetHeight = 256;
                 break;
             case 'png':
             default:
@@ -219,6 +223,14 @@ async function handleImageRendering(mode) {
         const x = (targetWidth - w) / 2;
         const y = (targetHeight - h) / 2;
         ctx.drawImage(currentImage, x, y, w, h);
+    } else if (exportExt === 'ico') {
+        // ICO (Gunakan Contain logic untuk nge-center gambar tanpa meregangkannya menjadi kotak paksa)
+        const scale = Math.min(targetWidth / originalWidth, targetHeight / originalHeight);
+        const w = originalWidth * scale;
+        const h = originalHeight * scale;
+        const x = (targetWidth - w) / 2;
+        const y = (targetHeight - h) / 2;
+        ctx.drawImage(currentImage, x, y, w, h);
     } else {
         // Normal Resize (Stretch to fit exact dimensions specified)
         ctx.drawImage(currentImage, 0, 0, targetWidth, targetHeight);
@@ -234,14 +246,23 @@ async function handleImageRendering(mode) {
     
     // Save behavior via IPC to Node.js backend
     if (exportExt === 'ico') {
-        await ipcRenderer.invoke('save-ico', {
+        const result = await ipcRenderer.invoke('save-ico', {
             buffer: buffer,
             defaultPath: `${fileNameNoExt}.ico`
         });
+        
+        // Memunculkan interaksi Error Pesan
+        if (result && !result.success && !result.canceled) {
+            alert(`[Gagal Konversi ICO]\n\nSyarat Utama ICO: Base image package membutuhkan file yang spesifik, kemungkinan library gagal generate di sistem Anda.\n\nError Asli dari Node.js:\n${result.error}`);
+        }
     } else {
-        await ipcRenderer.invoke('save-file', {
+        const result = await ipcRenderer.invoke('save-file', {
             buffer: buffer,
             defaultPath: `${fileNameNoExt}${defaultSuffix}.${exportExt}`
         });
+        
+        if (result && !result.success && !result.canceled) {
+            alert(`[Gagal Menyimpan File]\n\nError: ${result.error}`);
+        }
     }
 }
