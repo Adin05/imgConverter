@@ -2,14 +2,31 @@
   "name": "image-converter-pro",
   "version": "1.0.0",
   "description": "Desktop application for converting and resizing images, generating icons and passport photos.",
+  "author": "Developer",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "build": "electron-builder --win portable"
+  },
+  "build": {
+    "appId": "com.imageconverterpro.app",
+    "productName": "Image Converter Pro",
+    "win": {
+      "target": "portable"
+    },
+    "portable": {
+      "artifactName": "${productName}_Portable_v${version}.${ext}",
+      "requestExecutionLevel": "user"
+    },
+    "directories": {
+      "output": "dist"
+    }
   },
   "dependencies": {
     "png-to-ico": "^2.1.8"
   },
   "devDependencies": {
-    "electron": "^29.1.0"
+    "electron": "^29.1.0",
+    "electron-builder": "^24.13.3"
   }
 }
