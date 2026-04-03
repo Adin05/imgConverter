@@ -93,14 +93,35 @@
                             <label>Warna Background</label>
                             <div class="color-picker">
                                 <input type="color" id="bg-color" value="#ff0000">
-                                <span class="text-sm">(Sangat pas untuk ubah bg foto layar transparan)</span>
+                                <span class="text-sm">(Sangat pas untuk foto asli yang transparan)</span>
                             </div>
+                        </div>
+
+                        <!-- Printing layout -->
+                        <div class="control-group checkbox-group" style="margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid var(--border);">
+                            <input type="checkbox" id="print-grid-check">
+                            <label for="print-grid-check">Cetak ke Kertas (Siap Gunting)</label>
+                        </div>
+                        
+                        <div class="control-group hidden" id="paper-size-container">
+                            <label>Pilih Ukuran Kertas</label>
+                            <select id="paper-size">
+                                <option value="A4">A4 (21.0 x 29.7 cm)</option>
+                                <option value="4R">4R (10.2 x 15.2 cm)</option>
+                                <option value="Letter">Letter (21.6 x 27.9 cm)</option>
+                            </select>
+
+                            <label style="margin-top: 0.75rem;">Jumlah Cetak (Kosongkan jika diisi penuh)</label>
+                            <input type="number" id="print-qty" placeholder="Misal: 5" min="1">
                         </div>
                     </div>
 
                     <!-- Action Buttons -->
                     <div class="actions">
-                        <button class="btn btn-accent action-btn" id="process-btn">Proses & Simpan</button>
+                        <!-- Disembunyikan (hidden) secara bawaan -->
+                        <button class="btn btn-primary action-btn hidden" id="print-btn" style="background-color: #a6e3a1; color: var(--bg-darker);">🖨️ Cetak Langsung (Print)</button>
+                        
+                        <button class="btn btn-accent action-btn" id="process-btn">💾 Simpan ke Komputer</button>
                         <button class="btn btn-secondary action-btn" id="cancel-btn">Ganti Gambar</button>
                     </div>
                 </div>

@@ -4,6 +4,9 @@ const fs = require('fs');
 const os = require('os');
 const pngToIco = require('png-to-ico');
 
+// Mencegah error "GPU state invalid" pada Electron (berkaitan dengan Printer UI)
+app.disableHardwareAcceleration();
+
 function createWindow() {
   const win = new BrowserWindow({
     width: 900,
