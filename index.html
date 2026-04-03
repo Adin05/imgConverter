@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Converter Pro</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <h1>Image Converter Pro</h1>
+            <p>Saling konversi otomatis antara JPG, PNG, WEBP, ICO & SVG.</p>
+        </header>
+
+        <main>
+            <div class="upload-section" id="drop-zone">
+                <input type="file" id="file-input" accept="image/png, image/jpeg, image/jpg, image/svg+xml, image/webp, image/bmp, image/gif" hidden>
+                <div class="upload-content">
+                    <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                    </svg>
+                    <h3>Drag & Drop gambar Anda di sini</h3>
+                    <p>atau</p>
+                    <button class="btn btn-primary" onclick="document.getElementById('file-input').click()">Pilih File</button>
+                    <p class="file-info">Format File Asal Bebas (Mendukung JPG, PNG, SVG, WEBP, BMP, GIF)</p>
+                </div>
+            </div>
+
+            <div class="preview-section hidden" id="preview-section">
+                <div class="image-preview">
+                    <img id="preview-img" src="" alt="Preview">
+                </div>
+                
+                <div class="controls-section">
+                    <h2 class="filename" id="filename-display">filename.png</h2>
+                    
+                    <div class="control-group">
+                        <label>Mode Konversi</label>
+                        <select id="mode-select">
+                            <option value="resize">Universal Convert & Resize</option>
+                            <option value="passport">Pas Foto (Ukuran Standar ID)</option>
+                        </select>
+                    </div>
+
+                    <!-- Universal Convert Options -->
+                    <div id="options-resize" class="options-panel">
+                        <div class="form-row">
+                            <div class="control-group">
+                                <label>Lebar / Width (px)</label>
+                                <input type="number" id="input-width" placeholder="Auto">
+                            </div>
+                            <div class="control-group">
+                                <label>Tinggi / Height (px)</label>
+                                <input type="number" id="input-height" placeholder="Auto">
+                            </div>
+                        </div>
+                        <div class="control-group checkbox-group">
+                            <input type="checkbox" id="keep-aspect" checked>
+                            <label for="keep-aspect">Pertahankan Rasio (Aspect Ratio)</label>
+                        </div>
+                        <div class="form-row">
+                            <div class="control-group">
+                                <label>Target Format</label>
+                                <select id="format-select">
+                                    <option value="png">PNG (.png)</option>
+                                    <option value="jpg">JPG / JPEG (.jpg)</option>
+                                    <option value="webp">WEBP (.webp)</option>
+                                    <option value="ico">Windows Icon (.ico)</option>
+                                </select>
+                            </div>
+                            <div class="control-group">
+                                <label>Warna Latar (Jika target JPG)</label>
+                                <div class="color-picker" style="margin-top:0.25rem;">
+                                    <input type="color" id="resize-bg-color" value="#ffffff">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Passport Options -->
+                    <div id="options-passport" class="options-panel hidden">
+                        <div class="control-group">
+                            <label>Standar Ukuran (Cetak 300 DPI)</label>
+                            <select id="passport-size">
+                                <option value="2x3">2x3 cm (236 x 354 px)</option>
+                                <option value="3x4">3x4 cm (354 x 472 px)</option>
+                                <option value="4x6">4x6 cm (472 x 709 px)</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <label>Warna Background</label>
+                            <div class="color-picker">
+                                <input type="color" id="bg-color" value="#ff0000">
+                                <span class="text-sm">(Sangat pas untuk ubah bg foto layar transparan)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="actions">
+                        <button class="btn btn-accent action-btn" id="process-btn">Proses & Simpan</button>
+                        <button class="btn btn-secondary action-btn" id="cancel-btn">Ganti Gambar</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Hidden canvas for processing -->
+    <canvas id="processing-canvas" style="display: none;"></canvas>
+
+    <script src="renderer.js"></script>
+</body>
+</html>

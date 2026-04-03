@@ -1,0 +1,15 @@
+{
+  "name": "image-converter-pro",
+  "version": "1.0.0",
+  "description": "Desktop application for converting and resizing images, generating icons and passport photos.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "dependencies": {
+    "png-to-ico": "^2.1.8"
+  },
+  "devDependencies": {
+    "electron": "^29.1.0"
+  }
+}
